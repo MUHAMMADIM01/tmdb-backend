@@ -3,32 +3,28 @@ import fetch from "node-fetch";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
-// ✅ Default route
+// Basic Route
 app.get("/", (req, res) => {
-  res.json({
-    status: "ok",
-    message: "TMDB Movies API App is running (Node.js)"
-  });
+  res.send("TMDB Backend API is running ✅");
 });
 
-// ✅ Movies route
+// Movies Route
 app.get("/movies", async (req, res) => {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_API_KEY}`
+      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_API_KEY}&language=en-US&page=1`
     );
+
     const data = await response.json();
     res.json(data);
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({ error: "Failed to fetch movies" });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
 
-// Export app for Vercel
 export default app;
