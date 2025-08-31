@@ -1,13 +1,15 @@
 {
   "name": "tmdb-backend",
   "version": "1.0.0",
+  "description": "A simple Node.js backend for TMDB API",
   "main": "index.js",
+  "type": "module",
   "scripts": {
+    "dev": "node index.js",
     "start": "node index.js"
   },
   "dependencies": {
     "express": "^4.19.2",
-    "node-fetch": "^3.3.2",
-    "dotenv": "^16.4.5"
+    "node-fetch": "^3.3.2"
   }
 }
