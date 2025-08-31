@@ -1,21 +1,23 @@
-const express = require("express");
-const fetch = require("node-fetch");
-require("dotenv").config();
+import express from "express";
+import fetch from "node-fetch";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
-// Home route
+// ✅ Default route
 app.get("/", (req, res) => {
-  res.json({ status: "ok", message: "TMDB Movies API (Node.js) is running 🚀" });
+  res.json({
+    status: "ok",
+    message: "TMDB Movies API App is running (Node.js)"
+  });
 });
 
-// Movies route
+// ✅ Movies route
 app.get("/movies", async (req, res) => {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`
+      `https://api.themoviedb.org/3/movie/popular?api_key=${TMDB_API_KEY}`
     );
     const data = await response.json();
     res.json(data);
@@ -24,7 +26,9 @@ app.get("/movies", async (req, res) => {
   }
 });
 
-// Start server
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
+
+// Export app for Vercel
+export default app;
