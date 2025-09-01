@@ -4,27 +4,27 @@ import fetch from "node-fetch";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Basic Route
-app.get("/", (req, res) => {
-  res.send("TMDB Backend API is running ✅");
-});
-
-// Movies Route
 app.get("/movies", async (req, res) => {
   try {
     const response = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_API_KEY}&language=en-US&page=1`
+      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.TMDB_API_KEY}`
     );
+    
+    if (!response.ok) {
+      return res
+        .status(response.status)
+        .json({ error: "Failed to fetch from TMDB API" });
+    }
 
     const data = await response.json();
     res.json(data);
-  } catch (err) {
-    res.status(500).json({ error: "Failed to fetch movies" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "Internal server error", details: error.message });
   }
 });
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-export default app;
