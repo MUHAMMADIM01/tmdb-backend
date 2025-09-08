@@ -1,16 +1,30 @@
-# 3MTT Fullstack Project
+# 🎬 Movie Finder App (Fullstack)
 
-This project demonstrates a simple **Node.js backend** integration with the **TMDB API**.  
+A fullstack app built with **React (frontend)** + **Express & PostgreSQL (backend)**.  
+It integrates **TMDB API** to fetch movies, supports **authentication (JWT)**, and allows users to manage favorites & watchlists.
 
-## Folder Structure
-- backend/ → Node.js + Express server
-- frontend/ → Placeholder for frontend files (to be added later)
+---
 
-## Deployment
-- Backend is deployed on Vercel.
+## 🚀 Features
+- User registration & login
+- JWT authentication
+- Search movies (TMDB API)
+- Add/remove favorites
+- Add/remove watchlist
+- Organized backend structure (routes/controllers/models)
+- React frontend with pages: Login, Register, Movies, Favorites, Watchlist
 
-## How to Run Locally
-1. Clone repo
-2. cd backend
-3. npm install
-4. npm start
+---
+
+## 📂 Project Structure
+See `/frontend` and `/backend`.
+
+---
+
+## 🛠️ Local Development
+
+### Backend
+```bash
+cd backend
+npm install
+npm run dev
