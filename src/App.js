@@ -1,24 +1,26 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Movies from "./pages/Movies";
 import MovieDetail from "./pages/MovieDetail";
-
-// idan kana da Navbar ko Home page, zaka iya import su nan ma
-// import Navbar from "./components/Navbar";
+import Favorites from "./pages/Favorites";
+// Home page, connect
 // import Home from "./pages/Home";
 
 function App() {
   return (
     <Router>
-      {/* <Navbar />  // zaɓi ne idan kana da navbar component */}
+      <Navbar /> {/* Navbar to Movies Page */}
       <Routes>
-        {/* Movies list + search + filters */}
+        {/* Movies list page */}
         <Route path="/movies" element={<Movies />} />
 
-        {/* Single movie detail page */}
+        {/* Single movie detail */}
         <Route path="/movies/:id" element={<MovieDetail />} />
 
-        {/* idan kana da homepage */}
+        {/* Favorites page */}
+        <Route path="/favorites" element={<Favorites />} />
+        {/* Homepage */}
         {/* <Route path="/" element={<Home />} /> */}
       </Routes>
     </Router>
