@@ -1,4 +1,35 @@
-// FAVORITES ENDPOINTS
+const express = require("express");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { Pool } = require("pg");
+const cors = require("cors");
+
+const app = express();
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL, // Vercel/Heroku db url
+});
+
+app.use(cors());
+app.use(express.json());
+
+// =============== AUTH MIDDLEWARE ===============
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+}
+
+// =============== EXISTING ROUTES (register/login) ===============
+// app.post("/register", ...)  etc.
+// app.post("/login", ...)
+
+// =============== FAVORITES ROUTES ===============
 app.post("/favorites/add", authenticateToken, async (req, res) => {
   const { movie_id, movie_title } = req.body;
   try {
@@ -37,8 +68,7 @@ app.delete("/favorites/:id", authenticateToken, async (req, res) => {
   }
 });
 
-
-// WATCHLIST ENDPOINTS
+// =============== WATCHLIST ROUTES ===============
 app.post("/watchlist/add", authenticateToken, async (req, res) => {
   const { movie_id, movie_title } = req.body;
   try {
@@ -75,3 +105,7 @@ app.delete("/watchlist/:id", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 });
+
+// =============== SERVER START ===============
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
