@@ -1,49 +1,44 @@
 import React, { useState } from "react";
+import { supabase } from "../supabaseClient";
 
-function Login() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Za ka iya haɗa API call a nan
-    console.log("Login with:", { email, password });
-    alert("Login attempt submitted!");
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    if (error) setMessage(error.message);
+    else setMessage("Login successful!");
   };
 
   return (
-    <div style={styles.container}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
+    <div className="p-4">
+      <h2 className="text-xl mb-2">Login</h2>
+      <form onSubmit={handleLogin}>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={styles.input}
-          required
+          className="border p-2 mb-2 block"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
-          required
+          className="border p-2 mb-2 block"
         />
-        <button type="submit" style={styles.button}>
+        <button type="submit" className="bg-green-500 text-white px-4 py-2">
           Login
         </button>
       </form>
+      {message && <p>{message}</p>}
     </div>
   );
-}
-
-const styles = {
-  container: { textAlign: "center", marginTop: "50px" },
-  form: { display: "flex", flexDirection: "column", width: "250px", margin: "0 auto" },
-  input: { margin: "8px 0", padding: "10px", borderRadius: "5px", border: "1px solid #ccc" },
-  button: { padding: "10px", backgroundColor: "#007bff", color: "#fff", border: "none", borderRadius: "5px" },
-};
-
-export default Login;
+      }
