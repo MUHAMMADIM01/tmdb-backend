@@ -1,58 +1,44 @@
 import React, { useState } from "react";
+import { supabase } from "../supabaseClient";
 
-function Register() {
-  const [name, setName] = useState("");
+export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    // Za ka iya haɗa API call a nan
-    console.log("Register with:", { name, email, password });
-    alert("Registration attempt submitted!");
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+    if (error) setMessage(error.message);
+    else setMessage("Check your email for confirmation link!");
   };
 
   return (
-    <div style={styles.container}>
-      <h2>Register</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={styles.input}
-          required
-        />
+    <div className="p-4">
+      <h2 className="text-xl mb-2">Register</h2>
+      <form onSubmit={handleRegister}>
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          style={styles.input}
-          required
+          className="border p-2 mb-2 block"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
-          required
+          className="border p-2 mb-2 block"
         />
-        <button type="submit" style={styles.button}>
-          Register
+        <button type="submit" className="bg-blue-500 text-white px-4 py-2">
+          Sign Up
         </button>
       </form>
+      {message && <p>{message}</p>}
     </div>
   );
-}
-
-const styles = {
-  container: { textAlign: "center", marginTop: "50px" },
-  form: { display: "flex", flexDirection: "column", width: "250px", margin: "0 auto" },
-  input: { margin: "8px 0", padding: "10px", borderRadius: "5px", border: "1px solid #ccc" },
-  button: { padding: "10px", backgroundColor: "#28a745", color: "#fff", border: "none", borderRadius: "5px" },
-};
-
-export default Register;
+      }
